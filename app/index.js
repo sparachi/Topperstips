@@ -1,7 +1,16 @@
 var express = require('express'),
+    cors = require('cors');
     bodyParser = require('body-parser');
 
 var app = express();
+var whitelist = ['http://localhost:8080'];
+var corsOptions = {
+  origin: function(origin, callback){
+    var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+    callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
+  }
+};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -12,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // See the README about ordering of middleware
 // Load the routes ("controllers" -ish)
 //app.use(require('app/site/router'))
-app.use('/api', require('../subscribe/route'));
+app.use('/api',cors(corsOptions), require('../subscribe/route'));
 //app.use('/api', require('app/users/router'))
 // Repeat the above line for additional model areas ("deals", "vehicles", etc)
 
@@ -31,3 +40,6 @@ module.exports = app;
 // https://expressjs.com/en/advanced/best-practice-performance.html
 
 // http://jilles.me/express-routing-the-beginners-guide/
+// http://jonathanmh.com/how-to-enable-cors-in-express-js-node-js/
+// http://restlet.com/blog/2015/12/15/understanding-and-using-cors/
+// https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters

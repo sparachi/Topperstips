@@ -7,18 +7,23 @@ var logger = require('../app/logger')('subscribe');
 function getSubscribers (req, res) {
   logger.info({req: req}, "getSubscribers() called");
   subscriberModel.findAll(function (error, customers) {
+    //res.header("Access-Control-Allow-Origin", "http://localhost:8080");
     if (error) {
       logger.error(error, 'error finding subscribers');
       res.status(500).send(error);
+      logger.info("Response sent is " + res);
       return;
     }
+    logger.info("Response sent is " + res);
     res.json(customers);
   })
 }
 
 function createSubscribers (req, res) {
-  logger.info({req: req}, "createSubscribers() called");
-  res.status(200).send();
+  logger.info("createSubscribers() called and request is \n");
+  logger.info(req.body.subscriberEmail);
+  //res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.status(200).send({data: req.body.subscriberEmail + " added succesfully!"});
   //res.end("subscriber created");
 }
 
