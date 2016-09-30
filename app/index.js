@@ -1,5 +1,5 @@
 var express = require('express'),
-    cors = require('cors');
+    cors = require('cors'),
     bodyParser = require('body-parser');
 
 var app = express();
@@ -11,8 +11,10 @@ var corsOptions = {
   }
 };
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 //app.set('views', __dirname)
 // use whatever templating system(s) you like
@@ -21,7 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // See the README about ordering of middleware
 // Load the routes ("controllers" -ish)
 //app.use(require('app/site/router'))
-app.use('/api',cors(corsOptions), require('../subscribe/route'));
+app.use('/api/subscriber', require('../subscribe/route'));
+app.use('/api/authenticate', require('../authenticate/route'));
 //app.use('/api', require('app/users/router'))
 // Repeat the above line for additional model areas ("deals", "vehicles", etc)
 
