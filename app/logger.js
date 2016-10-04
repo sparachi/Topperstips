@@ -14,6 +14,10 @@ module.exports = function(serviceName) {
           level: 'info',
           // log INFO and above to stdout
           stream: process.stdout
+          //path: 'topperstips-info.log',
+          //type: 'rotating-file',
+          //period: '1d',   // daily rotation
+          //count: 3        // keep 3 back copies
         },
         {
           level: 'error',
