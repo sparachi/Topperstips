@@ -14,6 +14,3 @@ if (PRODUCTION) {
   // for example
   config.express.ip = '0.0.0.0'
 }
-// config.db same deal
-// config.email etc
-// config.log
