@@ -6,7 +6,7 @@ var logger = require('../app/logger')('subscribe');
 
 function getSubscribers (req, res) {
   logger.info({req: req}, "getSubscribers() called");
-  subscriberModel.findAll(function (error, customers) {
+  subscriberModel.getSubscribers(function (error, customers) {
     if (error) {
       logger.error(error, 'error finding subscribers');
       res.status(500).send(error);
@@ -21,7 +21,14 @@ function getSubscribers (req, res) {
 function createSubscribers (req, res) {
   logger.info("createSubscribers() called and request is \n");
   logger.info(req.body.subscriberEmail);
-  res.status(200).send({data: req.body.subscriberEmail + " added succesfully, Hurray!"});
+  subscriberModel.addSubscriber(req.body.subscriberEmail, function(error, response){
+    if(error){
+      logger.error(error, 'error adding subscribers');
+    } else {
+      res.status(200).send({data: req.body.subscriberEmail + " added succesfully!"});
+    }
+  });
+
 }
 
 // route middleware that will happen on every request
