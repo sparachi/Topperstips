@@ -14,10 +14,7 @@ exports.getSubscribers = function(callback) {
         callback(err);
       } else {
         logger.info("subscribers document" + docs);
-        callback(null, [
-          {id: 1, name: 'Jane Doe'},
-          {id: 2, name: 'John Doe'}
-        ]);
+        callback(docs);
       }
     });
   }, function(err) {

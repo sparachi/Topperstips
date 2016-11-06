@@ -1,6 +1,7 @@
 var router = require('express').Router(),
     jwt = require('express-jwt'),
-    logger = require('../app/logger')('authenticate');
+    logger = require('../app/logger')('authenticate'),
+    authModel = require('./authenticate-model.js');
 
 // Set up our JWT authentication middleware
 // Be sure to replace the YOUR_AUTH0_CLIENT_SECRET and
@@ -17,9 +18,21 @@ function verifyToken (req, res) {
   res.status(200).send( {data: "All good. You only get this message if you're authenticated"});
 }
 
+function onlogin (req, res) {
+  logger.info({req: req}, "onlogin() called");
+  authModel.captureLogin(req.body, function(error, response){
+    if(error){
+      logger.error(error, 'error adding user');
+    } else {
+      res.status(200).send({data: "user login added succesfully!"});
+    }
+  });
+}
+
 // We include the authenticate middleware here that will check for
 // a JWT and validate it. If there is a token and it is valid the
 // rest of the code will execute.
 router.get('', authenticate, verifyToken);
+router.post('/onlogin', onlogin);
 
 module.exports = router;
